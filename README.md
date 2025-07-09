@@ -1,12 +1,50 @@
-# React + Vite
+All tentative atm
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project Structure
 
-Currently, two official plugins are available:
+src/
+├── components/
+│ ├── common/
+│ │ ├── NavBar.js
+│ │ ├── Footer.js
+│ │ └── FlashAlert.js
+│ ├── blog/
+│ │ ├── BlogCard.js
+│ │ ├── BlogForm.js
+│ │ └── BlogDetail.js
+│ └── recipe/
+│ ├── RecipeCard.js
+│ ├── RecipeForm.js
+│ └── RecipeDetail.js
+├── pages/
+│ ├── HomePage.js
+│ ├── BlogsPage.js
+│ ├── AddBlogPage.js
+│ ├── EditBlogPage.js
+│ ├── RecipesPage.js
+│ ├── AddRecipePage.js
+│ └── EditRecipePage.js
+├── App.js
+└── index.js
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Component Hierarchy
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+App
+├── NavBar
+├── Routes
+│ ├── HomePage
+│ ├── BlogsPage
+│ │ ├── BlogCard
+│ ├── AddBlogPage
+│ │ └── BlogForm
+│ ├── EditBlogPage
+│ │ └── BlogForm
+│ ├── BlogDetailPage
+│ ├── RecipesPage
+│ │ ├── RecipeCard
+│ ├── AddRecipePage
+│ │ └── RecipeForm
+│ ├── EditRecipePage
+│ │ └── RecipeForm
+│ └── RecipeDetailPage
+└── Footer
