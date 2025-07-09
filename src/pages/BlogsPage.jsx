@@ -5,11 +5,12 @@ function BlogsPage() {
       {id: 1, title: 'My First Bake'},
       {id: 2, title: 'Basque Burnt Cheesecake!'}
     ]
+    
     return (
         <div>
             <h1>ALL BLOGS</h1>
             <div>
-              {mockBlogs.map(blog => (<BlogCard key={blog.id} title={blog.title} />))}
+              {mockBlogs.map(blog => (<BlogCard key={blog.id} title={blog.title} id={blog.id}/>))}
             </div>
         </div>
     );
