@@ -1,3 +1,7 @@
 export { default as HomePage } from './HomePage'
 export { default as BlogsPage } from './BlogsPage'
+export { default as AddBlogPage } from './AddBlogPage'
+export { default as EditBlogPage } from './EditBlogPage'
 export { default as RecipesPage } from './RecipesPage'
+export { default as AddRecipePage } from './AddRecipePage'
+export { default as EditRecipePage } from './EditRecipePage'
