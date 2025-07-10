@@ -5,27 +5,28 @@ Project Structure
 src/
 ├── components/
 │ ├── common/
-│ │ ├── NavBar.js
-│ │ ├── Footer.js
-│ │ └── FlashAlert.js
+│ │ ├── NavBar.jsx
+│ │ ├── Footer.jsx
+│ │ └── FlashAlert.jsx
 │ ├── blog/
-│ │ ├── BlogCard.js
-│ │ ├── BlogForm.js
-│ │ └── BlogDetail.js
+│ │ ├── BlogCard.jsx
+│ │ ├── BlogForm.jsx
+│ │ └── FullBlog.jsx
 │ └── recipe/
-│ ├── RecipeCard.js
-│ ├── RecipeForm.js
-│ └── RecipeDetail.js
+│ ├── RecipeCard.jsx
+│ ├── RecipeForm.jsx
+│ └── FullRecipe.jsx
 ├── pages/
-│ ├── HomePage.js
-│ ├── BlogsPage.js
-│ ├── AddBlogPage.js
-│ ├── EditBlogPage.js
-│ ├── RecipesPage.js
-│ ├── AddRecipePage.js
-│ └── EditRecipePage.js
-├── App.js
-└── index.js
+│ ├── HomePage.jsx
+│ ├── BlogsPage.jsx
+│ ├── FullBlogPage.jsx
+│ ├── AddBlogPage.jsx
+│ ├── EditBlogPage.jsx
+│ ├── RecipesPage.jsx
+│ ├── AddRecipePage.jsx
+│ └── EditRecipePage.jsx
+├── App.jsx
+└── index.jsx
 
 Component Hierarchy
 
@@ -39,12 +40,12 @@ App
 │ │ └── BlogForm
 │ ├── EditBlogPage
 │ │ └── BlogForm
-│ ├── BlogDetailPage
+│ ├── FullBlogPage
 │ ├── RecipesPage
 │ │ ├── RecipeCard
 │ ├── AddRecipePage
 │ │ └── RecipeForm
 │ ├── EditRecipePage
 │ │ └── RecipeForm
-│ └── RecipeDetailPage
+│ └── FullRecipePage
 └── Footer
