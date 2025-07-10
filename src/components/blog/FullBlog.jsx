@@ -1,7 +1,10 @@
+import { useParams } from 'react-router-dom'
 
 function FullBlog() {
+  const { id } = useParams();
+
   return (
-    <div>FullBlog</div>
+    <h1>FullBlog #{id}</h1>
   )
 }
 
