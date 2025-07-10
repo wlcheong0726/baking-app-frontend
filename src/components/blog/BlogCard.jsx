@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
+import classes from './BlogCard.module.css'
 
-function BlogCard( {title, id} ) {
+function BlogCard({ id, title, content }) {
   return (
-    <div>
-      <h3>{id}</h3>
-      <h3>{title}</h3>
+    <li className={classes.blogcard}>
+      <h3>Blog Post #{id}</h3>
+      <Link to={`/blogs/${id}`}>
+        <h3 className={classes.text}>{title}</h3>
+      </Link>
+      <p className={classes.text}>{content}</p>
       <Link to={`/blogs/${id}`}>Read More</Link>
-    </div>
+    </li>
 
   )
 }
