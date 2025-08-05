@@ -2,16 +2,9 @@ import BlogCard from './BlogCard'
 import Modal from '../common/Modal'
 import BlogForm from './BlogForm'
 import classes from './BlogsList.module.css'
-import { useState } from 'react'
 
-function BlogsList({ isAddingNewBlog, onStopAddingNewBlog}) {
-  const[blogs, setBlogs] = useState([]);
-
-  function addBlogHandler(blogData) {
-    setBlogs((existingBlogs) => [blogData, ...existingBlogs]);
-  }
-
-
+function BlogsList({ blogs, onAddBlog, isAddingNewBlog, onStopAddingNewBlog}) {
+  
 
   // Sibling elements not allowed in return method
   return (
@@ -20,25 +13,16 @@ function BlogsList({ isAddingNewBlog, onStopAddingNewBlog}) {
         <Modal onClose={onStopAddingNewBlog}>
           <BlogForm 
             onCancel={onStopAddingNewBlog}
-            onAddBlog={addBlogHandler}
+            onAddBlog={onAddBlog}
           />
         </Modal>
       )}
       {blogs.length > 0 && (
-              <ul className={classes.blogs}>
-        {/* {blogs.map(blog => (
-          <BlogCard 
-            key={blog.id} 
-            id={blog.id} 
-            title={blog.title} 
-            content={blog.content}
-          />
-        ))} */}
-
-        {
-          blogs.map((blog) => <BlogCard key={blog.content} title={blog.title} content={blog.content}/>)
-        }
-      </ul>
+        <ul className={classes.blogs}>
+          {
+            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content}/>)
+          }
+        </ul>
       )}
 
       {blogs.length === 0 && (
