@@ -1,13 +1,11 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 import NavBar from "./components/common/NavBar";
 import { HomePage, BlogsPage, RecipesPage } from './pages'
-import FullBlog from './components/blog/FullBlog';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
@@ -16,7 +14,6 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
 
           <Route path="/blogs" element={<BlogsPage />}></Route>
-          <Route path="blogs/:id" element={<FullBlog />}></Route>
 
           <Route path="/recipes" element={<RecipesPage />}></Route>
         </Routes>
