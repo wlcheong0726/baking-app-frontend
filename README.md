@@ -1,51 +1,47 @@
-All tentative atm
+### Baking App Web UI
 
-Project Structure
+A React frontend for the Baking App, consuming the [Spring Boot backend](https://github.com/wlcheong0726/baking-app).
+Displays baking blog posts and allows users to create new ones.
 
-src/
-├── components/
-│ ├── common/
-│ │ ├── NavBar.jsx
-│ │ ├── Footer.jsx
-│ │ └── FlashAlert.jsx
-│ ├── blog/
-│ │ ├── BlogCard.jsx
-│ │ ├── BlogForm.jsx
-│ │ └── FullBlog.jsx
-│ └── recipe/
-│ ├── RecipeCard.jsx
-│ ├── RecipeForm.jsx
-│ └── FullRecipe.jsx
-├── pages/
-│ ├── HomePage.jsx
-│ ├── BlogsPage.jsx
-│ ├── FullBlogPage.jsx
-│ ├── AddBlogPage.jsx
-│ ├── EditBlogPage.jsx
-│ ├── RecipesPage.jsx
-│ ├── AddRecipePage.jsx
-│ └── EditRecipePage.jsx
-├── App.jsx
-└── index.jsx
+---
 
-Component Hierarchy
+## Features
+- View all blogs
+- Add a new blog post
+- Client-side form validation
+- Axios for API calls
+- React Router for page navigation
 
-App
-├── NavBar
-├── Routes
-│ ├── HomePage
-│ ├── BlogsPage
-│ │ ├── BlogCard
-│ ├── AddBlogPage
-│ │ └── BlogForm
-│ ├── EditBlogPage
-│ │ └── BlogForm
-│ ├── FullBlogPage
-│ ├── RecipesPage
-│ │ ├── RecipeCard
-│ ├── AddRecipePage
-│ │ └── RecipeForm
-│ ├── EditRecipePage
-│ │ └── RecipeForm
-│ └── FullRecipePage
-└── Footer
+---
+
+## Tech Stack
+- React 19.1.1
+- Axios
+- React Router
+- Tailwind CSS (planned)
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Run Locally
+```bash
+# Clone the repo
+git clone https://github.com/YOUR_GITHUB_USERNAME/baking-app-web-ui.git
+cd baking-app-web-ui
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+
+```
+
+
+
