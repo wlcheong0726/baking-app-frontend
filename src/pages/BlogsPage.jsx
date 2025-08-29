@@ -3,8 +3,9 @@ import FullBlog from '../components/blog/FullBlog';
 
 import Modal from "../components/common/Modal";
 import BlogForm from "../components/blog/BlogForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
+import apiClient from "../api/apiClient";
 
 function BlogsPage() {
     // const mockBlogs = [
@@ -12,15 +13,38 @@ function BlogsPage() {
     //   {id: 2, title: 'Basque Burnt Cheesecake!', content: 'I tried to bake a Basque Burnt Cheesecake today. It is a Spanish cake originated from San Sebastian.'}
     // ]
 
-    const[blogs, setBlogs] = useState([]);
+  const[blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  function addBlogHandler(blogData) {
-    const newBlog = {
-      ...blogData,
-      id: Date.now()
-    };
-    setBlogs((existingBlogs) => [newBlog, ...existingBlogs]);
+  const fetchBlogs = async () => {
+    try {
+      // setLoading(true);
+      const response = await apiClient.get('/blogposts'); // invoke REST API asynchronously, returns a promise
+      console.log(response.data) // Axios GET request to fetch blogs
+      setBlogs(response.data); // Assuming the response data is an array of blog posts
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+      setError(
+        error.response?.data?.message ||
+        "Failed to fetch blogs. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
+  
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+  
+  // function addBlogHandler(blogData) {
+  //   const newBlog = {
+  //     ...blogData,
+  //     id: Date.now()
+  //   };
+  //   setBlogs((existingBlogs) => [newBlog, ...existingBlogs]);
+  // }
 
     const [ modalIsVisible, setModalIsVisible ] = useState(false);
     
@@ -31,6 +55,15 @@ function BlogsPage() {
     function showModalHandler() {
       setModalIsVisible(true);
     }
+
+    if (loading) {
+    return <p>Loading blogs...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
     
     return (
       <>
@@ -45,7 +78,7 @@ function BlogsPage() {
         <Routes>
           <Route index element={<BlogsList 
                                   blogs={blogs} 
-                                  onAddBlog={addBlogHandler} 
+                                  // onAddBlog={addBlogHandler} 
                                   isAddingNewBlog={modalIsVisible} 
                                   onStopAddingNewBlog={hideModalHandler}
                                   onReadMore={modalIsVisible}/>
