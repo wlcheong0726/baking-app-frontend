@@ -38,13 +38,13 @@ function BlogsPage() {
     fetchBlogs();
   }, []);
   
-  // function addBlogHandler(blogData) {
-  //   const newBlog = {
-  //     ...blogData,
-  //     id: Date.now()
-  //   };
-  //   setBlogs((existingBlogs) => [newBlog, ...existingBlogs]);
-  // }
+  function addBlogHandler(blogData) {
+    const newBlog = {
+      ...blogData,
+      // id: Date.now()
+    };
+    setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
+  }
 
     const [ modalIsVisible, setModalIsVisible ] = useState(false);
     
@@ -78,7 +78,7 @@ function BlogsPage() {
         <Routes>
           <Route index element={<BlogsList 
                                   blogs={blogs} 
-                                  // onAddBlog={addBlogHandler} 
+                                  onAddBlog={addBlogHandler} 
                                   isAddingNewBlog={modalIsVisible} 
                                   onStopAddingNewBlog={hideModalHandler}
                                   onReadMore={modalIsVisible}/>
