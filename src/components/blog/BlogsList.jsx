@@ -3,7 +3,7 @@ import Modal from '../common/Modal'
 import BlogForm from './BlogForm'
 import classes from './BlogsList.module.css'
 
-function BlogsList({ blogs, isAddingNewBlog, onStopAddingNewBlog}) {
+function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog}) {
   
 
   // Sibling elements not allowed in return method
@@ -13,7 +13,7 @@ function BlogsList({ blogs, isAddingNewBlog, onStopAddingNewBlog}) {
         <Modal onClose={onStopAddingNewBlog}>
           <BlogForm 
             onCancel={onStopAddingNewBlog}
-            // onAddBlog={onAddBlog}
+            onAddBlog={onAddBlog}
           />
         </Modal>
       )}
