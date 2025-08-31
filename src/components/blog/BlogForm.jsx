@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classes from './BlogForm.module.css'
 import apiClient from '../../api/apiClient';
 
-function BlogForm({ onCancel }) {
+function BlogForm({ onCancel, onAddBlog }) {
   // const [enteredTitle, setEnteredTitle] = useState('');
   // const [enteredContent, setEnteredContent] = useState('');
   const [formData, setFormData] = useState({
@@ -32,10 +32,14 @@ function BlogForm({ onCancel }) {
     event.preventDefault();
     try {
       const response = await apiClient.post('/blogposts', formData);
+      // console.log('Full response: ', response);
       console.log('Blog created: ', response.data);
+      onAddBlog(response.data); // Pass the newly created blog to parent component
+      onCancel(); // Close the form modal after successful creation
 
     } catch (error) {
       console.log('Error creating blog: ', error);
+      alert('Failed to create blog. Please try again.');
     }
   }
 
