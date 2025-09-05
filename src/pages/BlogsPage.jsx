@@ -32,6 +32,21 @@ function BlogsPage() {
   useEffect(() => {
     fetchBlogs();
   }, []);
+
+  const deleteBlog = async (id) => {
+    try {
+      const response = await apiClient.delete(`/blogposts/${id}`);
+
+      if (response.status === 200) {
+        setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
+      }
+
+      console.log(response.data);
+
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  }
   
   function addBlogHandler(blogData) {
     const newBlog = {
@@ -75,7 +90,8 @@ function BlogsPage() {
                                   onAddBlog={addBlogHandler} 
                                   isAddingNewBlog={modalIsVisible} 
                                   onStopAddingNewBlog={hideModalHandler}
-                                  onReadMore={modalIsVisible}/>
+                                  onReadMore={modalIsVisible}
+                                  onDeleteBlog={deleteBlog}/>
                                 }>
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
