@@ -38,8 +38,7 @@ function BlogsPage() {
       const response = await apiClient.delete(`/blogposts/${id}`);
 
       if (response.status === 200) {
-        // setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
-        setBlogs(blogs.filter(b => b.id !== id));
+        setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
       }
 
       console.log(response.data);
