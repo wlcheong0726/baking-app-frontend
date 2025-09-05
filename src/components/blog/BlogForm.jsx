@@ -3,22 +3,11 @@ import classes from './BlogForm.module.css'
 import apiClient from '../../api/apiClient';
 
 function BlogForm({ onCancel, onAddBlog }) {
-  // const [enteredTitle, setEnteredTitle] = useState('');
-  // const [enteredContent, setEnteredContent] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     author: '',
     content: ''
   });
-
-
-  // function titleChangeHandler(event) {
-  //   setEnteredTitle(event.target.value);
-  // }
-
-  // function contentChangeHandler(event) {
-  //   setEnteredContent(event.target.value);
-  // }
 
   function formDataChangeHandler(event) {
     const { name, value } = event.target;
@@ -32,7 +21,6 @@ function BlogForm({ onCancel, onAddBlog }) {
     event.preventDefault();
     try {
       const response = await apiClient.post('/blogposts', formData);
-      // console.log('Full response: ', response);
       console.log('Blog created: ', response.data);
       onAddBlog(response.data); // Pass the newly created blog to parent component
       onCancel(); // Close the form modal after successful creation
@@ -42,17 +30,6 @@ function BlogForm({ onCancel, onAddBlog }) {
       alert('Failed to create blog. Please try again.');
     }
   }
-
-  // function submitHandler(event) {
-  //   event.preventDefault();
-  //   const blogData = {
-  //     title: enteredTitle,
-  //     content: enteredContent
-  //   }
-  //   console.log(blogData);
-  //   onAddBlog(blogData);
-  //   onCancel();
-  // }
 
   return (
     <form className={classes.form} onSubmit={createBlog}>
