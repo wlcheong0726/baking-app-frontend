@@ -3,7 +3,7 @@ import Modal from '../common/Modal'
 import BlogForm from './BlogForm'
 import classes from './BlogsList.module.css'
 
-function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog}) {
+function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog, onDeleteBlog}) {
   
 
   // Sibling elements not allowed in return method
@@ -20,7 +20,7 @@ function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog}) {
       {blogs.length > 0 && (
         <ul className={classes.blogs}>
           {
-            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content}/>)
+            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} onDeleteBlog={onDeleteBlog}/>)
           }
         </ul>
       )}
