@@ -11,6 +11,7 @@ function BlogsPage() {
   const[blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [blogToEdit, setBlogToEdit] = useState(null);
 
   const fetchBlogs = async () => {
     try {
@@ -55,6 +56,23 @@ function BlogsPage() {
     setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
   }
 
+  function openBlogFormForEditing(id) {
+    const blogById = blogs.find((blog) => blog.id === id);
+    if (blogById) {
+      setBlogToEdit(blogById);
+      setModalIsVisible(true);
+      console.log("Blog to edit:", blogToEdit);
+    }
+  }
+
+  function editBlogHandler(updatedBlog) {
+    setBlogs((previousBlogs) =>
+      previousBlogs.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
+      )
+    );
+    }
+
     const [ modalIsVisible, setModalIsVisible ] = useState(false);
     
     function hideModalHandler() {
@@ -91,7 +109,12 @@ function BlogsPage() {
                                   isAddingNewBlog={modalIsVisible} 
                                   onStopAddingNewBlog={hideModalHandler}
                                   onReadMore={modalIsVisible}
-                                  onDeleteBlog={deleteBlog}/>
+                                  onDeleteBlog={deleteBlog}
+                                  blogToEdit={blogToEdit}
+                                  onEditBlog={openBlogFormForEditing}
+                                  onEditedBlog={editBlogHandler}
+                                  isEditingBlog={modalIsVisible}
+                                  onStopEditingBLog={hideModalHandler}/>
                                 }>
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
