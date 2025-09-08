@@ -5,8 +5,6 @@ import NavBar from "./components/common/NavBar";
 import { HomePage, BlogsPage, RecipesPage } from './pages'
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
         <NavBar />

@@ -3,7 +3,7 @@ import Modal from '../common/Modal'
 import BlogForm from './BlogForm'
 import classes from './BlogsList.module.css'
 
-function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog}) {
+function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog, onDeleteBlog, blogToEdit, isEditingBlog, onStopEditingBLog, onEditBlog, onEditedBlog }) {
   
 
   // Sibling elements not allowed in return method
@@ -17,10 +17,22 @@ function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog}) {
           />
         </Modal>
       )}
+
+      {isEditingBlog && (
+        <Modal onClose={onStopEditingBLog}>
+          <BlogForm 
+            blogToEdit={blogToEdit}
+            onCancel={onStopEditingBLog}
+            onEditBlog={onEditBlog}
+            onEditedBlog={onEditedBlog}
+          />
+        </Modal>
+      )}
+
       {blogs.length > 0 && (
         <ul className={classes.blogs}>
           {
-            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content}/>)
+            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author} onDeleteBlog={onDeleteBlog} onEditBlog={onEditBlog}/>)
           }
         </ul>
       )}

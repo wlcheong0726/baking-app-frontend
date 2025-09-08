@@ -8,14 +8,10 @@ import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
 
 function BlogsPage() {
-    // const mockBlogs = [
-    //   {id: 1, title: 'My First Bake', content: 'Today I baked my first cake. It was a strawberry shortcake. It took me 3 hours to make.'},
-    //   {id: 2, title: 'Basque Burnt Cheesecake!', content: 'I tried to bake a Basque Burnt Cheesecake today. It is a Spanish cake originated from San Sebastian.'}
-    // ]
-
   const[blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [blogToEdit, setBlogToEdit] = useState(null);
 
   const fetchBlogs = async () => {
     try {
@@ -37,14 +33,45 @@ function BlogsPage() {
   useEffect(() => {
     fetchBlogs();
   }, []);
+
+  const deleteBlog = async (id) => {
+    try {
+      const response = await apiClient.delete(`/blogposts/${id}`);
+
+      if (response.status === 200) {
+        setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
+      }
+
+      console.log(response.data);
+
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  }
   
   function addBlogHandler(blogData) {
     const newBlog = {
       ...blogData,
-      // id: Date.now()
     };
     setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
   }
+
+  function openBlogFormForEditing(id) {
+    const blogById = blogs.find((blog) => blog.id === id);
+    if (blogById) {
+      setBlogToEdit(blogById);
+      setModalIsVisible(true);
+      console.log("Blog to edit:", blogToEdit);
+    }
+  }
+
+  function editBlogHandler(updatedBlog) {
+    setBlogs((previousBlogs) =>
+      previousBlogs.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
+      )
+    );
+    }
 
     const [ modalIsVisible, setModalIsVisible ] = useState(false);
     
@@ -81,19 +108,18 @@ function BlogsPage() {
                                   onAddBlog={addBlogHandler} 
                                   isAddingNewBlog={modalIsVisible} 
                                   onStopAddingNewBlog={hideModalHandler}
-                                  onReadMore={modalIsVisible}/>
+                                  onReadMore={modalIsVisible}
+                                  onDeleteBlog={deleteBlog}
+                                  blogToEdit={blogToEdit}
+                                  onEditBlog={openBlogFormForEditing}
+                                  onEditedBlog={editBlogHandler}
+                                  isEditingBlog={modalIsVisible}
+                                  onStopEditingBLog={hideModalHandler}/>
                                 }>
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
 
         </Routes>
-
-{/* 
-
-
-        <div>
-            <BlogsList isAddingNewBlog={modalIsVisible} onStopAddingNewBlog={hideModalHandler}/>
-        </div> */}
       </>
     );
 }
