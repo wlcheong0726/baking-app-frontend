@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
 
 function BlogsPage() {
+  const [ modalIsVisible, setModalIsVisible ] = useState(false);
   const[blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -72,8 +73,6 @@ function BlogsPage() {
       )
     );
     }
-
-    const [ modalIsVisible, setModalIsVisible ] = useState(false);
     
     function hideModalHandler() {
       setModalIsVisible(false);
