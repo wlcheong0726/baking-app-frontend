@@ -8,9 +8,12 @@ import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
 
 function BlogsPage() {
+  const [isAddingNewBlog, setIsAddingNewBlog] = useState(false);
+  const [isEditingBlog, setIsEditingBlog] = useState(false);
   const[blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [blogToEdit, setBlogToEdit] = useState(null);
 
   const fetchBlogs = async () => {
     try {
@@ -33,7 +36,43 @@ function BlogsPage() {
     fetchBlogs();
   }, []);
 
-  const deleteBlog = async (id) => {
+  function openBlogFormForAddingNewBlog() {
+  setIsAddingNewBlog(true);
+  setIsEditingBlog(false);
+  }
+  
+  function addBlogHandler(blogData) {
+    const newBlog = {
+      ...blogData,
+    };
+    setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
+  }
+
+  function openBlogFormForEditing(id) {
+    const blogById = blogs.find((blog) => blog.id === id);
+    if (blogById) {
+      setBlogToEdit(blogById);
+      setIsEditingBlog(true);
+      setIsAddingNewBlog(false);
+      console.log("Blog to edit:", blogToEdit);
+    }
+  }
+
+  function editBlogHandler(updatedBlog) {
+    setBlogs((previousBlogs) =>
+      previousBlogs.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
+      )
+    );
+    }
+    
+    function hideModalHandler() {
+      setIsAddingNewBlog(false);
+      setIsEditingBlog(false);
+      setBlogToEdit(null);
+    }
+
+    const deleteBlog = async (id) => {
     try {
       const response = await apiClient.delete(`/blogposts/${id}`);
 
@@ -47,23 +86,6 @@ function BlogsPage() {
       console.error("Error deleting blog:", error);
     }
   }
-  
-  function addBlogHandler(blogData) {
-    const newBlog = {
-      ...blogData,
-    };
-    setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
-  }
-
-    const [ modalIsVisible, setModalIsVisible ] = useState(false);
-    
-    function hideModalHandler() {
-      setModalIsVisible(false);
-    }
-
-    function showModalHandler() {
-      setModalIsVisible(true);
-    }
 
     if (loading) {
     return <p>Loading blogs...</p>;
@@ -81,17 +103,21 @@ function BlogsPage() {
         </div>
 
         <div>
-          <button onClick={showModalHandler}>Add New Blog</button>
+          <button onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
         </div>
 
         <Routes>
           <Route index element={<BlogsList 
                                   blogs={blogs} 
                                   onAddBlog={addBlogHandler} 
-                                  isAddingNewBlog={modalIsVisible} 
+                                  isAddingNewBlog={isAddingNewBlog}
                                   onStopAddingNewBlog={hideModalHandler}
-                                  onReadMore={modalIsVisible}
-                                  onDeleteBlog={deleteBlog}/>
+                                  onDeleteBlog={deleteBlog}
+                                  blogToEdit={blogToEdit}
+                                  onEditBlog={openBlogFormForEditing}
+                                  onEditedBlog={editBlogHandler}
+                                  isEditingBlog={isEditingBlog}
+                                  onStopEditingBLog={hideModalHandler}/>
                                 }>
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>

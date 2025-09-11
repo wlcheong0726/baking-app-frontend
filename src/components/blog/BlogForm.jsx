@@ -2,12 +2,24 @@ import { useState } from 'react';
 import classes from './BlogForm.module.css'
 import apiClient from '../../api/apiClient';
 
-function BlogForm({ onCancel, onAddBlog }) {
-  const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    content: ''
-  });
+function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
+  let defaultFormData;
+
+  if (blogToEdit) {
+    defaultFormData = {
+      title: blogToEdit.title,
+      author: blogToEdit.author,
+      content: blogToEdit.content
+    };
+  } else {
+    defaultFormData = {
+      title: '',
+      author: '',
+      content: ''
+    };
+  }
+
+  const [formData, setFormData] = useState(defaultFormData);
 
   function formDataChangeHandler(event) {
     const { name, value } = event.target;
@@ -31,9 +43,22 @@ function BlogForm({ onCancel, onAddBlog }) {
     }
   }
 
+  const editBlog = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await apiClient.put(`/blogposts/blogpost/${blogToEdit.id}`, formData);
+      console.log('Blog updated: ', response.data);
+      onEditedBlog(response.data); // Pass the updated blog to parent component
+      onCancel(); // Close the form modal after successful update
+    } catch (error) {
+      console.log('Error updating blog: ', error);
+      alert('Failed to update blog. Please try again.');
+    }
+  }
+
   return (
-    <form className={classes.form} onSubmit={createBlog}>
-      <h1>Create New Blog</h1>
+    <form className={classes.form} onSubmit={blogToEdit ? editBlog : createBlog}>
+      <h1>{blogToEdit ? 'Edit Blog' : 'Create New Blog'}</h1>
       <div>
         <label htmlFor="title" className={classes.label}>Title</label>
         <textarea id="title" name="title" value = {formData.title} rows={1} onChange={formDataChangeHandler}></textarea>
