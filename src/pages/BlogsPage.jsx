@@ -6,6 +6,7 @@ import BlogForm from "../components/blog/BlogForm";
 import { useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
+import classes from './BlogsPage.module.css'
 
 function BlogsPage() {
   const [isAddingNewBlog, setIsAddingNewBlog] = useState(false);
@@ -20,7 +21,8 @@ function BlogsPage() {
       // setLoading(true);
       const response = await apiClient.get('/blogposts'); // invoke REST API asynchronously, returns a promise
       console.log(response.data) // Axios GET request to fetch blogs
-      setBlogs(response.data); // Assuming the response data is an array of blog posts
+      const sortedBlogs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort blogs by createdAt in descending order
+      setBlogs(sortedBlogs); // Assuming the response data is an array of blog posts
     } catch (error) {
       console.error("Error fetching blogs:", error);
       setError(
@@ -45,7 +47,7 @@ function BlogsPage() {
     const newBlog = {
       ...blogData,
     };
-    setBlogs((existingBlogs) => [...existingBlogs, newBlog]);
+    setBlogs((existingBlogs) => [newBlog, ...existingBlogs]);
   }
 
   function openBlogFormForEditing(id) {
@@ -94,16 +96,15 @@ function BlogsPage() {
   if (error) {
     return <p>Error: {error}</p>;
   }
-
     
     return (
       <>
         <div>
-            <h1>ALL BLOGS</h1>
+            <h2>ALL BLOGS</h2>
         </div>
 
-        <div>
-          <button onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
+        <div className={classes.actions}>
+          <button className={classes.button} onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
         </div>
 
         <Routes>
