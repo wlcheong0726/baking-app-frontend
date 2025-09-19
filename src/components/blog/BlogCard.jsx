@@ -7,7 +7,7 @@ function BlogCard({ id, title, author, content, onDeleteBlog, onEditBlog }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   function toggleContent() {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(prev => !prev); 
   }
 
   return (
