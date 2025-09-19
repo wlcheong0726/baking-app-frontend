@@ -36,7 +36,10 @@ function BlogCard({ id, title, author, content, onDeleteBlog, onEditBlog }) {
           </p>
         )}
 
+       {content.length > 200 && (
       <button className={classes.buttonReadMore} onClick={toggleContent}>{isExpanded ? 'Show Less' : 'Read More'}</button>
+       )}
+       
       <div className={classes.actions}>
         <button className={classes.button} onClick = {() => onDeleteBlog(id)}>
           Delete
