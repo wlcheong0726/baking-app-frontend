@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"; 
+import { Link, useParams } from "react-router-dom"; 
 import classes from './FullBlog.module.css'
 
 function FullBlog( {blogs} ) {
@@ -10,11 +10,14 @@ function FullBlog( {blogs} ) {
   }
 
   return (
-    <div className={classes.fullblog}>
-      <h1>FullBlog #{blog.id}</h1>
-      <h3 className={classes.title}>{blog.title}</h3>
-      <p className={classes.text}>{blog.content}</p>
-    </div>
+    <>
+      <Link to="/blogs" className={classes.backLink}>{"< Back to Blogs"}</Link>
+      <div className={classes.fullblog}>
+        <h1>FullBlog #{blog.id}</h1>
+        <h3 className={classes.title}>{blog.title}</h3>
+        <p className={classes.text}>{blog.content}</p>
+      </div>
+    </>
   )
 }
 
