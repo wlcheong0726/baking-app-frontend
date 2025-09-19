@@ -23,3 +23,13 @@
   color: #ffffff;
   font-style: italic;
 }
+
+.backLink {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+  color: #957fd4;
+  text-decoration: solid;
+  text-decoration: underline;
+}
+
