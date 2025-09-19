@@ -1,0 +1,35 @@
+.fullblog {
+  margin: 1rem 0;
+  padding: 2rem;
+  background-color: #9c7eee;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  animation: animate-in 1s ease-out forwards;
+}
+
+.title {
+  white-space: pre-wrap;
+  font-size: 1.25rem;
+  margin: 0.25rem 0 0 1;
+  color: #34036c;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.text {
+  white-space: pre-wrap;
+  font-size: 1.25rem;
+  margin: 0.25rem 0 0 0;
+  color: #ffffff;
+  font-style: italic;
+}
+
+.backLink {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+  color: #957fd4;
+  text-decoration: solid;
+  text-decoration: underline;
+}
+

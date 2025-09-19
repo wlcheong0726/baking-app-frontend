@@ -1,7 +1,11 @@
 .form {
   background-color: #6233b9;
   padding: 1rem;
-  width: 20rem;
+  width: 40rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .form label {
