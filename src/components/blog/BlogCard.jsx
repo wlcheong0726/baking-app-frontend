@@ -3,7 +3,7 @@ import classes from './BlogCard.module.css'
 import { useState } from "react";
 
 
-function BlogCard({ id, title, author, content, onDeleteBlog, onEditBlog }) {
+function BlogCard({ id, title, author, content, imageUrl, onDeleteBlog, onEditBlog }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   function toggleContent() {
@@ -25,6 +25,10 @@ function BlogCard({ id, title, author, content, onDeleteBlog, onEditBlog }) {
         <h3 className={classes.text}>{title}</h3>
       </Link>
       <h4>Author: {author}</h4>
+
+      {imageUrl && (
+        <img src={imageUrl} alt={title} className={classes.blogImage} />
+      )}
 
       {content.length > 200 ? (
           <p className={classes.text}>
