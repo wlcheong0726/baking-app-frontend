@@ -23,6 +23,13 @@
   font-style: italic;
 }
 
+.blogImage {
+  max-width: 50%; /* Responsive */
+  height: auto;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
 @keyframes animate-in {
   from {
     opacity: 0;
