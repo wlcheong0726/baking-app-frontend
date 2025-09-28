@@ -32,7 +32,7 @@ function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog, onD
       {blogs.length > 0 && (
         <ul className={classes.blogs}>
           {
-            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author} onDeleteBlog={onDeleteBlog} onEditBlog={onEditBlog}/>)
+            blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author} imageUrl={blog.imageUrl} onDeleteBlog={onDeleteBlog} onEditBlog={onEditBlog}/>)
           }
         </ul>
       )}
