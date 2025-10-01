@@ -56,7 +56,6 @@ function BlogsPage() {
       setBlogToEdit(blogById);
       setIsEditingBlog(true);
       setIsAddingNewBlog(false);
-      console.log("Blog to edit:", blogToEdit);
     }
   }
 
