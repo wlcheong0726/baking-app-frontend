@@ -101,6 +101,11 @@ input.hiddenFileInput {
   margin-top: 10px;
 }
 
+.imagePreview {
+  max-width: 200px;
+  margin-top: 10px;
+}
+
 .buttonRemoveImage {
   cursor: pointer;
   font: inherit;
