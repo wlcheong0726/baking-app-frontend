@@ -87,6 +87,7 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
       cleanupImagePreview();
       onCancel(); // Close the form modal after successful creation
     } catch (error) {
+      if (error.response?.status === 400)
       console.log('Error creating blog: ', error);
       alert('Failed to create blog. Please try again.');
     }
