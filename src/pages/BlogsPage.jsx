@@ -3,7 +3,7 @@ import FullBlog from '../components/blog/FullBlog';
 
 import Modal from "../components/common/Modal";
 import BlogForm from "../components/blog/BlogForm";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
 import classes from './BlogsPage.module.css'
@@ -16,15 +16,37 @@ function BlogsPage() {
   const [error, setError] = useState(null);
   const [blogToEdit, setBlogToEdit] = useState(null);
 
-  const fetchBlogs = async () => {
+  const[pageNo, setPageNo] = useState(1);
+  const[pageSize, setPageSize] = useState(20);
+  const[sortBy, setSortBy] = useState('createdAt');
+  const[sortDir, setSortDir] = useState('desc');
+  const[keyword, setKeyword] = useState('');
+  const[totalPages, setTotalPages] = useState(1);
+  const[totalElements, setTotalElements] = useState(0);
+
+  const fetchBlogs = useCallback( async () => {
     try {
       // setLoading(true);
-      const response = await apiClient.get('/blogposts'); // invoke REST API asynchronously, returns a promise
-      console.log(response.data) // Axios GET request to fetch blogs
-      const sortedBlogs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort blogs by createdAt in descending order
-      setBlogs(sortedBlogs); // Assuming the response data is an array of blog posts
+      const response = await apiClient.get('/blogposts', {
+        params: {
+          pageNo: pageNo,
+          pageSize: pageSize,
+          sortBy: sortBy,
+          sortDir: sortDir,
+          keyword: keyword || undefined
+        }
+      }); // invoke REST API asynchronously, returns a promise
+      console.log("all blogs: " + JSON.stringify(response.data.content, null, 2)) // Axios GET request to fetch blogs
+      // const sortedBlogs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort blogs by createdAt in descending order
+      setBlogs(response.data.content); // Assuming the response data is an array of blog posts
+      setTotalPages(response.data.totalPages);
+      setTotalElements(response.data.totalElements);
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error("Error fetching blogs:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      });
       setError(
         error.response?.data?.message ||
         "Failed to fetch blogs. Please try again later."
@@ -32,11 +54,23 @@ function BlogsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  },
+    [pageNo, pageSize, sortBy, sortDir, keyword]
+  );
   
+  useEffect(() => {fetchBlogs();}, [fetchBlogs]);
+
+  // Debounced search input
+  const[searchText, setSearchText] = useState('');
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    const id = setTimeout(() => {
+      setPageNo(1);
+      setKeyword(searchText.trim());
+    }, 400);
+    return () => clearTimeout(id);
+  }, [searchText]);
+
+  
 
   function openBlogFormForAddingNewBlog() {
   setIsAddingNewBlog(true);
@@ -77,8 +111,9 @@ function BlogsPage() {
     try {
       const response = await apiClient.delete(`/blogposts/${id}`);
 
-      if (response.status === 200) {
-        setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
+      if (response.status === 204) {
+        // setBlogs((previousBlogs) => previousBlogs.filter((blog) => blog.id !== id));
+        fetchBlogs();
       }
 
       console.log(response.data);
@@ -102,9 +137,46 @@ function BlogsPage() {
             <h2>ALL BLOGS</h2>
         </div>
 
+        <input
+          type='text'
+          placeholder="Search blog"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        >
+        </input>
+
         <div className={classes.actions}>
           <button className={classes.button} onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
         </div>
+
+        <div>
+          <button disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
+          <span>Page {pageNo}</span>
+          <button disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
+
+          <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+          </select>
+
+          <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
+            <option value="createdAt">Created</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+          </select>
+
+          <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+
+          <span>Total Blogs: {totalElements}</span>
+
+        </div>
+
+
 
         <Routes>
           <Route index element={<BlogsList 
