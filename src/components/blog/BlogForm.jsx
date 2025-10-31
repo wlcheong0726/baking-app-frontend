@@ -1,27 +1,22 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './BlogForm.module.css'
 import apiClient from '../../api/apiClient';
 
 function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
-  let defaultFormData;
-
-  if (blogToEdit) {
-    defaultFormData = {
-      title: blogToEdit.title,
-      author: blogToEdit.author,
-      content: blogToEdit.content
-    };
-  } else {
-    defaultFormData = {
-      title: '',
-      author: '',
-      content: ''
-    };
-  }
-
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState(() => ({
+    title: blogToEdit?.title || '',
+    author: blogToEdit?.author || '',
+    content: blogToEdit?.content || '',
+  }));
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  useEffect(() => {
+    if (blogToEdit && blogToEdit.imageUrl != null) {
+      setImagePreview(blogToEdit.imageUrl);
+      console.log(blogToEdit)
+    }
+  }, [blogToEdit])
 
   // ref for file input
   const fileInputRef = useRef(null);
@@ -74,6 +69,7 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
   const createBlog = async (event) => {
     event.preventDefault();
     try {
+
       const formDataToSend = new FormData();
       formDataToSend.append('title', formData.title);
       formDataToSend.append('author', formData.author);
@@ -99,7 +95,33 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
   const editBlog = async (event) => {
     event.preventDefault();
     try {
-      const response = await apiClient.put(`/blogposts/blogpost/${blogToEdit.id}`, formData);
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('author', formData.author);
+      formDataToSend.append('content', formData.content);
+
+      /**
+       * Scenario 1: 
+       * initially have pic uploaded
+       * 1. keep same pic 2. delete pic** 3. change pic**
+       *
+       * Scenario 2: 
+       * initially no pic uploaded
+       * 1. keep same 2. add pic**
+       */
+      if (imagePreview !== blogToEdit.imageUrl && selectedImage) {
+        formDataToSend.append('imageFile', selectedImage); // Scenario 1.3 and scenario 2.2: initially have pic then change & initially no pic and add new pic
+      } else if (imagePreview && imagePreview == blogToEdit.imageUrl && !selectedImage) {
+        // Scenario 1.1: initially have pic uploaded + keep same pic
+        formDataToSend.append('imageUrl', blogToEdit.imageUrl);
+      }
+
+      // For scenarios 1.1 and 2.1 - both end up not having picture, hence formDataToSend will not have key value pair to indicate to backend of this.
+      console.log('edit form data selected image: ' + selectedImage);
+      console.log('edit form data imagepreview: ' + imagePreview);
+      console.log('Sending edit form data: ', formDataToSend);
+
+      const response = await apiClient.put(`/blogposts/blogpost/${blogToEdit.id}`, formDataToSend);
       console.log('Blog updated: ', response.data);
       onEditedBlog(response.data); // Pass the updated blog to parent component
       onCancel(); // Close the form modal after successful update
@@ -155,12 +177,13 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
             {/* Conditional: Image Preview + Remove Button */}
             {imagePreview && (
               <div className={classes.imagePreviewContainer}>
-                <img src={imagePreview} alt="Selected" style={{ maxWidth: '200px', marginTop: '10px' }} />
+                <img src={imagePreview} className={classes.imagePreview} />
                 <button type="button" onClick={removeSelectedImage} className={classes.buttonRemoveImage}>
                   Remove Image
                 </button>
               </div>
             )}
+
           </div>
       </div>
       
