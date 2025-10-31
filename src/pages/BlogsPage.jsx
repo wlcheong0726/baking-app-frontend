@@ -1,8 +1,6 @@
 import BlogsList from "../components/blog/BlogsList";
 import FullBlog from '../components/blog/FullBlog';
 
-import Modal from "../components/common/Modal";
-import BlogForm from "../components/blog/BlogForm";
 import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
@@ -137,46 +135,51 @@ function BlogsPage() {
             <h2>ALL BLOGS</h2>
         </div>
 
-        <input
-          type='text'
-          placeholder="Search blog"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        >
-        </input>
-
         <div className={classes.actions}>
           <button className={classes.button} onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
         </div>
 
-        <div>
-          <button disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
-          <span>Page {pageNo}</span>
-          <button disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
+        <div className={classes.toolbar}>
+          <input
+            className={classes.search}
+            type='text'
+            placeholder="Search blog"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          >
+          </input>
 
-          <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={20}>20</option>
-          </select>
+          <div className={classes.pager}>
+            <button className={classes.pageBtn} disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
+            <span className={classes.pageInfo}>Page {pageNo}</span>
+            <button className={classes.pageBtn} disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
+          </div>
 
-          <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
-            <option value="createdAt">Created</option>
-            <option value="title">Title</option>
-            <option value="author">Author</option>
-          </select>
+          <div className={classes.pageSizeBox}>
+            <label>Per page:</label>
+            <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+            </select>
+          </div>
+          
+          <div className={classes.pager}>
+            <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
+              <option value="createdAt">Created</option>
+              <option value="title">Title</option>
+              <option value="author">Author</option>
+            </select>
 
-          <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
-            <option value="desc">Desc</option>
-            <option value="asc">Asc</option>
-          </select>
+            <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
+              <option value="desc">Desc</option>
+              <option value="asc">Asc</option>
+            </select>
+          </div>
 
           <span>Total Blogs: {totalElements}</span>
-
         </div>
-
-
 
         <Routes>
           <Route index element={<BlogsList 
