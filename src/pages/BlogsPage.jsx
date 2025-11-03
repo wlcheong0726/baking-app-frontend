@@ -14,11 +14,14 @@ function BlogsPage() {
   const [error, setError] = useState(null);
   const [blogToEdit, setBlogToEdit] = useState(null);
 
+  // Request parameters
   const[pageNo, setPageNo] = useState(1);
   const[pageSize, setPageSize] = useState(20);
   const[sortBy, setSortBy] = useState('createdAt');
   const[sortDir, setSortDir] = useState('desc');
   const[keyword, setKeyword] = useState('');
+
+  // Response parameters
   const[totalPages, setTotalPages] = useState(1);
   const[totalElements, setTotalElements] = useState(0);
 
@@ -67,8 +70,6 @@ function BlogsPage() {
     }, 400);
     return () => clearTimeout(id);
   }, [searchText]);
-
-  
 
   function openBlogFormForAddingNewBlog() {
   setIsAddingNewBlog(true);
@@ -196,7 +197,6 @@ function BlogsPage() {
                                 }>
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
-
         </Routes>
       </>
     );
