@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
 import classes from './BlogsPage.module.css'
+import { FaSearch } from "react-icons/fa";
 
 function BlogsPage() {
   const [isAddingNewBlog, setIsAddingNewBlog] = useState(false);
@@ -121,14 +122,6 @@ function BlogsPage() {
       console.error("Error deleting blog:", error);
     }
   }
-
-    if (loading) {
-    return <p>Loading blogs...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
     
     return (
       <>
@@ -141,48 +134,58 @@ function BlogsPage() {
         </div>
 
         <div className={classes.toolbar}>
-          <input
-            className={classes.search}
-            type='text'
-            placeholder="Search blog"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          >
-          </input>
-
-          <div className={classes.pager}>
-            <button className={classes.pageBtn} disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
-            <span className={classes.pageInfo}>Page {pageNo}</span>
-            <button className={classes.pageBtn} disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
-          </div>
-
-          <div className={classes.pageSizeBox}>
-            <label>Per page:</label>
-            <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
-            </select>
+          <div className={classes.searchBox}>
+            <FaSearch />
+            <input
+              className={classes.searchBar}
+              type='text'
+              placeholder="Search blog"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}/>
           </div>
           
-          <div className={classes.pager}>
-            <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
-              <option value="createdAt">Created</option>
-              <option value="title">Title</option>
-              <option value="author">Author</option>
-            </select>
+          <div className={classes.pageControls}>
+            <div className={classes.pager}>
+              <button className={classes.pageBtn} disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
+              <span className={classes.pageInfo}>Page {pageNo}</span>
+              <button className={classes.pageBtn} disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
+            </div>
 
-            <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
-              <option value="desc">Desc</option>
-              <option value="asc">Asc</option>
-            </select>
+            <div className={classes.pageSizeBox}>
+              <label>Per page:</label>
+              <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+              </select>
+            </div>
+            
+            <div className={classes.pager}>
+              <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
+                <option value="createdAt">Created</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+              </select>
+
+              <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
+                <option value="desc">Desc</option>
+                <option value="asc">Asc</option>
+              </select>
+            </div>
           </div>
-
-          <span>Total Blogs: {totalElements}</span>
         </div>
 
-        <Routes>
+        <span>Total Blogs: {totalElements}</span>
+
+
+        {/* Show loading or error message inside the layout */}
+        {loading && <p>Loading blogs...</p>}
+        {error && <p>Error: {error}</p>}
+
+        {/* Only show BlogsList if not loading and no error */}
+        {!loading && !error && (
+          <Routes>
           <Route index element={<BlogsList 
                                   blogs={blogs} 
                                   onAddBlog={addBlogHandler} 
@@ -198,6 +201,7 @@ function BlogsPage() {
           </Route>
           <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
         </Routes>
+        )}
       </>
     );
 }
