@@ -14,17 +14,42 @@
 
 .toolbar {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
   margin: 12px 0 16px;
 }
 
-.search {
-  flex: 1 1 260px;
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 10px;
   border: 1px solid #d7d7d7;
   border-radius: 6px;
+  box-shadow: 0px 0px 8px #ddd;
+  width: 50%;
+}
+
+.searchBar {
+  height: 36px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d7d7d7;
+  border-radius: 6px;
+  font-size: 1rem
+}
+
+.searchBar:focus {
+  outline: none;
+}
+
+.pageControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
 }
 
 .pageSizeBox {
