@@ -100,6 +100,8 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
       formDataToSend.append('title', formData.title);
       formDataToSend.append('author', formData.author);
       formDataToSend.append('content', formData.content);
+      console.log("edit form - imageurl = " + blogToEdit.imageUrl);
+      console.log("edit form - imagepreview = " + imagePreview);
 
       /**
        * Scenario 1: 
@@ -112,15 +114,17 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
        */
       if (imagePreview !== blogToEdit.imageUrl && selectedImage) {
         formDataToSend.append('imageFile', selectedImage); // Scenario 1.3 and scenario 2.2: initially have pic then change & initially no pic and add new pic
+        console.log("edit blog: image change");
       } else if (imagePreview && imagePreview == blogToEdit.imageUrl && !selectedImage) {
         // Scenario 1.1: initially have pic uploaded + keep same pic
         formDataToSend.append('imageUrl', blogToEdit.imageUrl);
+        console.log("edit blog: image kept the same");
       }
 
       // For scenarios 1.1 and 2.1 - both end up not having picture, hence formDataToSend will not have key value pair to indicate to backend of this.
-      console.log('edit form data selected image: ' + selectedImage);
-      console.log('edit form data imagepreview: ' + imagePreview);
-      console.log('Sending edit form data: ', formDataToSend);
+      // console.log('edit form data selected image: ' + selectedImage);
+      // console.log('edit form data imagepreview: ' + imagePreview);
+      // console.log('Sending edit form data: ', formDataToSend);
 
       const response = await apiClient.put(`/blogposts/blogpost/${blogToEdit.id}`, formDataToSend);
       console.log('Blog updated: ', response.data);
