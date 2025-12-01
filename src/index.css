@@ -26,3 +26,20 @@ body {
 .post {
   background-color: lightblue;
 }
+
+@layer utilities {
+  @keyframes blog-card-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-blog-card {
+    animation: blog-card-in 1s ease-out forwards;
+  }
+}
