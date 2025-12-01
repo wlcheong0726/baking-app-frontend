@@ -1,6 +1,6 @@
 function RecipesPage() {
     return (
-        <h1>RECIPES PAGE</h1>
+        <h2 className="text-3xl font-bold underline text-center">RECIPES PAGE</h2>
     );
 }
 
