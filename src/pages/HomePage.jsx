@@ -1,6 +1,8 @@
 function HomePage() {
     return (
-        <h1>HOME PAGE</h1>
+      <div>
+        <h2 className="text-3xl font-bold underline text-center">HOME PAGE</h2>
+      </div>
     );
 }
 

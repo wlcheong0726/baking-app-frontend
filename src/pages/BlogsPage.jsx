@@ -4,7 +4,6 @@ import FullBlog from '../components/blog/FullBlog';
 import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom'
 import apiClient from "../api/apiClient";
-import classes from './BlogsPage.module.css'
 import { FaSearch } from "react-icons/fa";
 
 function BlogsPage() {
@@ -125,82 +124,130 @@ function BlogsPage() {
     return (
       <>
         <div>
-            <h2>ALL BLOGS</h2>
+            <h2 className="text-3xl font-bold underline text-center">BLOGS PAGE</h2>
         </div>
 
-        <div className={classes.actions}>
-          <button className={classes.button} onClick={openBlogFormForAddingNewBlog}>Add New Blog</button>
+        {/* Add New Blog Button */}
+        <div className="flex gap-2 justify-center m-4">
+          <button
+            className="rounded bg-[#34036c] px-6 py-2 font-medium text-[#e5d5f7] transition-colors hover:bg-[#4a0b99]"
+            onClick={openBlogFormForAddingNewBlog}
+          >
+            Add New Blog
+          </button>
         </div>
 
-        <div className={classes.toolbar}>
-          <div className={classes.searchBox}>
-            <FaSearch />
-            <input
-              className={classes.searchBar}
-              type='text'
-              placeholder="Search blog"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}/>
-          </div>
-          
-          <div className={classes.pageControls}>
-            <div className={classes.pager}>
-              <button className={classes.pageBtn} disabled={pageNo <= 1} onClick={() => setPageNo(p => p-1)}>Prev</button>
-              <span className={classes.pageInfo}>Page {pageNo}</span>
-              <button className={classes.pageBtn} disabled={pageNo >= totalPages} onClick={() => setPageNo(p => p + 1)}>Next</button>
+        {/* Search, Pagination and Sorting Controls */}
+        <div className="mt-3 mb-4 flex w-full flex-col flex-wrap items-center gap-3">
+
+          {/* Search Input */}
+          <div className="flex w-full justify-center">
+            <div className="flex w-1/2 min-w-[260px] items-center gap-2 rounded-md border border-[#d7d7d7] bg-white px-2.5 py-2 shadow-[0_0_8px_#ddd]">
+              <FaSearch className="text-gray-500" />
+              <input
+                className="h-9 w-full rounded-md border border-[#d7d7d7] text-purple-500 px-2.5 py-2 text-base focus:outline-none"
+                type='text'
+                placeholder="Search blog"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
             </div>
+          </div>
 
-            <div className={classes.pageSizeBox}>
-              <label>Per page:</label>
-              <select value={pageSize} onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}>
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
-              </select>
+          {/* Pagination and Sorting Controls */}
+          <div className="flex items-center gap-4">
+
+            {/* Pagination Controls */}
+            <div className="flex items-center gap-2">
+              <button
+                className="rounded-md border border-[#d7d7d7] bg-white px-2.5 py-1.5 text-sm font-medium text-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={pageNo <= 1}
+                onClick={() => setPageNo(p => p-1)}
+              >
+                Prev
+              </button>
+              <span className="text-[0.95rem] font-semibold text-white">Page {pageNo}</span>
+              <button
+                className="rounded-md border border-[#d7d7d7] bg-white px-2.5 py-1.5 text-sm font-medium text-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={pageNo >= totalPages}
+                onClick={() => setPageNo(p => p + 1)}
+              >
+                Next
+              </button>
             </div>
             
-            <div className={classes.pager}>
-              <select value={sortBy} onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}>
-                <option value="createdAt">Created</option>
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-              </select>
+            {/* Sorting Controls */}
+            <div className="flex items-center gap-4"> {/* Between Per Page Controls & Sort Controls */}
 
-              <select value={sortDir} onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}>
-                <option value="desc">Desc</option>
-                <option value="asc">Asc</option>
-              </select>
+              <div className="flex items-center gap-2"> {/* Between Per Page & Select */}
+                <label className="font-semibold">Per page:</label>
+                <select
+                  className="rounded-md border border-[#d7d7d7] bg-white px-2 py-1 text-purple-500"
+                  value={pageSize}
+                  onChange={(e) => {setPageNo(1); setPageSize(e.target.value)}}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                </select>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <select
+                  className="rounded-md border border-[#d7d7d7] bg-white px-2 py-1 text-purple-500"
+                  value={sortBy}
+                  onChange={(e) => {setPageNo(1); setSortBy(e.target.value)}}
+                >
+                  <option value="createdAt">Created</option>
+                  <option value="title">Title</option>
+                  <option value="author">Author</option>
+                </select>
+
+                <select
+                  className="rounded-md border border-[#d7d7d7] bg-white px-2 py-1 text-purple-500"
+                  value={sortDir}
+                  onChange={(e) => {setPageNo(1); setSortDir(e.target.value)}}
+                >
+                  <option value="desc">Desc</option>
+                  <option value="asc">Asc</option>
+                </select>
+              </div>
             </div>
+
+            
           </div>
         </div>
 
-        <span>Total Blogs: {totalElements}</span>
+        <h4 className="text-center">Total Blogs: {totalElements}</h4>
 
 
         {/* Show loading or error message inside the layout */}
-        {loading && <p>Loading blogs...</p>}
-        {error && <p>Error: {error}</p>}
+        {loading && <p className="text-center">Loading blogs...</p>}
+        {error && <p className="text-center">Error: {error}</p>}
 
         {/* Only show BlogsList if not loading and no error */}
-        {!loading && !error && (
-          <Routes>
-          <Route index element={<BlogsList 
-                                  blogs={blogs} 
-                                  onAddBlog={addBlogHandler} 
-                                  isAddingNewBlog={isAddingNewBlog}
-                                  onStopAddingNewBlog={hideModalHandler}
-                                  onDeleteBlog={deleteBlog}
-                                  blogToEdit={blogToEdit}
-                                  onEditBlog={openBlogFormForEditing}
-                                  onEditedBlog={editBlogHandler}
-                                  isEditingBlog={isEditingBlog}
-                                  onStopEditingBLog={hideModalHandler}/>
-                                }>
-          </Route>
-          <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
-        </Routes>
-        )}
+        <div className="flex justify-center">
+          {!loading && !error && (
+            <Routes>
+            <Route index element={<BlogsList 
+                                    blogs={blogs} 
+                                    onAddBlog={addBlogHandler} 
+                                    isAddingNewBlog={isAddingNewBlog}
+                                    onStopAddingNewBlog={hideModalHandler}
+                                    onDeleteBlog={deleteBlog}
+                                    blogToEdit={blogToEdit}
+                                    onEditBlog={openBlogFormForEditing}
+                                    onEditedBlog={editBlogHandler}
+                                    isEditingBlog={isEditingBlog}
+                                    onStopEditingBLog={hideModalHandler}/>
+                                  }>
+            </Route>
+            <Route path=":id" element={<FullBlog blogs={blogs} />}></Route>
+          </Routes>
+          )}
+        </div>
+        
       </>
     );
 }

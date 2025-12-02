@@ -1,7 +1,6 @@
 import BlogCard from './BlogCard'
 import Modal from '../common/Modal'
 import BlogForm from './BlogForm'
-import classes from './BlogsList.module.css'
 
 function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog, onDeleteBlog, blogToEdit, isEditingBlog, onStopEditingBLog, onEditBlog, onEditedBlog }) {
   
@@ -30,7 +29,7 @@ function BlogsList({ blogs, isAddingNewBlog, onAddBlog, onStopAddingNewBlog, onD
       )}
 
       {blogs.length > 0 && (
-        <ul className={classes.blogs}>
+        <ul className="list-none w-auto max-w-4xl my-4 mx-auto py-4 grid gap-4 justify-center">
           {
             blogs.map((blog) => <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author} imageUrl={blog.imageUrl} onDeleteBlog={onDeleteBlog} onEditBlog={onEditBlog}/>)
           }

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import classes from './BlogForm.module.css'
 import apiClient from '../../api/apiClient';
 
 function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
@@ -137,53 +136,76 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
   }
 
   return (
-    <form className={classes.form} onSubmit={blogToEdit ? editBlog : createBlog}>
+    <form
+      className="bg-[#6233b9] p-4 w-[40rem] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg text-center"
+      onSubmit={blogToEdit ? editBlog : createBlog}
+    >
 
       {/* Form title changes based on add/edit mode */}
-      <h1 className={classes.h1}>{blogToEdit ? 'Edit Blog' : 'Create New Blog'}</h1>
+      <h1 className="text-center text-white mb-8 text-3xl font-semibold">
+        {blogToEdit ? 'Edit Blog' : 'Create New Blog'}
+      </h1>
 
       {/* Blog Title Input */}
       <div>
-        <label htmlFor="title" className={classes.label}>Title</label>
-        <textarea id="title" name="title" value = {formData.title} rows={1} onChange={formDataChangeHandler}></textarea>
+        <label htmlFor="title" className="block mb-1 text-[#eadbfb] font-bold text-sm uppercase tracking-wide">Title</label>
+        <textarea
+          id="title"
+          name="title"
+          value={formData.title}
+          rows={1}
+          onChange={formDataChangeHandler}
+          className="w-full p-2 rounded-md border-0 bg-[#c4a9e4] text-[#28262c] font-sans resize-none"
+        ></textarea>
       </div>
 
       {/* Blog Author Input */}
       <div>
-        <label htmlFor="author" className={classes.label}>Author</label>
-        <textarea id="author" name="author" value = {formData.author} rows={1} onChange={formDataChangeHandler}></textarea>
+        <label htmlFor="author" className="block mb-1 text-[#eadbfb] font-bold text-sm uppercase tracking-wide mt-4">Author</label>
+        <textarea
+          id="author"
+          name="author"
+          value={formData.author}
+          rows={1}
+          onChange={formDataChangeHandler}
+          className="w-full p-2 rounded-md border-0 bg-[#c4a9e4] text-[#28262c] font-sans resize-none"
+        ></textarea>
       </div>
 
       {/* Image Upload Block */}
       <div >
           {/* Label stays outside the styled block */}
-          <label htmlFor="image" className={classes.label}>Image (Optional)</label>
+          <label htmlFor="image" className="block mb-1 text-[#eadbfb] font-bold text-sm uppercase tracking-wide mt-4">Image (Optional)</label>
 
            {/* Styled container for upload UI */}
-          <div className={classes.imageUploadSection}>
+          <div className="bg-[#c4a9e4] p-4 rounded-lg">
 
             {/* Upload Button + Hidden Input */}
-            <div className={classes.imageUploadInputWrapper}>
+            <div className="flex justify-center mt-2">
               <input
                 id="image"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
                 ref={fileInputRef}
-                className={classes.hiddenFileInput}
+                className="hidden"
               />
               <label 
                 htmlFor="image" 
-                className={classes.uploadButton}>
+                className="inline-block py-1 px-4 bg-[#34036c] text-[#e5d5f7] rounded cursor-pointer text-sm font-medium hover:bg-[#23014a] transition-colors">
                   Choose Image
               </label>
             </div>
 
             {/* Conditional: Image Preview + Remove Button */}
             {imagePreview && (
-              <div className={classes.imagePreviewContainer}>
-                <img src={imagePreview} className={classes.imagePreview} />
-                <button type="button" onClick={removeSelectedImage} className={classes.buttonRemoveImage}>
+              <div className="flex flex-col items-center mt-2">
+                <img src={imagePreview} className="max-w-[200px] mt-2 rounded-md" />
+                <button
+                  type="button"
+                  onClick={removeSelectedImage}
+                  className="cursor-pointer text-xs py-1 px-4 rounded bg-[#a774e0] text-[#e5d5f7] border-0 mt-2 hover:bg-[#a262eb] transition-colors"
+                >
                   Remove Image
                 </button>
               </div>
@@ -194,14 +216,32 @@ function BlogForm({ onCancel, onAddBlog, blogToEdit, onEditedBlog }) {
       
       {/* Blog Content Input */}
       <div>
-        <label htmlFor="content" className={classes.label}>Content</label>
-        <textarea id="content" name="content" value = {formData.content} rows={6} className={classes.textarea} onChange={formDataChangeHandler}></textarea>
+        <label htmlFor="content" className="block mb-1 text-[#eadbfb] font-bold text-sm uppercase tracking-wide mt-4">Content</label>
+        <textarea
+          id="content"
+          name="content"
+          value={formData.content}
+          rows={6}
+          className="w-full p-2 rounded-md border-0 bg-[#c4a9e4] text-[#28262c] font-sans"
+          onChange={formDataChangeHandler}
+        ></textarea>
       </div>
 
       {/* Action Buttons */}
-      <div className={classes.actions}>
-        <button type="submit" className={classes.button}>Submit</button>
-        <button type="button" onClick={onCancel}>Cancel</button>
+      <div className="flex justify-end gap-2 mt-6">
+        <button
+          type="submit"
+          className="cursor-pointer font-semibold py-2 px-6 rounded bg-[#34036c] text-[#e5d5f7] border-0 hover:bg-[#23014a] transition-colors"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="cursor-pointer font-semibold py-2 px-6 rounded border-0 text-[#e5d5f7] hover:text-[#d1bee6] transition-colors"
+        >
+          Cancel
+        </button>
       </div>
 
     </form>
